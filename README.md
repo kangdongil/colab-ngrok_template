@@ -67,3 +67,29 @@ AuthToken와 password를 GitHub에 업로드되는 걸 방지하고자 환경변
     authtoken = os.environ.get('NGROK_AUTH_TOKEN')
     password = os.environ.get('REMOTE_ACCESS_PASSWORD')
     ```
+## 코드 예시
+```python
+!pip install colab-ssh python-dotenv -qU
+
+# Get Access to Google Drive
+from google.colab import drive
+drive.mount('/content/drive')
+
+# Get Personal Data from .env file
+envpath = '/content/drive/MyDrive/Colab Notebooks/.env'
+import sys, os
+from dotenv import load_dotenv
+
+if os.path.isfile(envpath):
+    load_dotenv(envpath, override=True)
+else:
+    !echo "ERROR: Environment File cannot be found."
+    sys.exit()
+
+authtoken = os.environ.get('NGROK_AUTH_TOKEN')
+password = os.environ.get('REMOTE_ACCESS_PASSWORD')
+
+# Launch Ngrok to get Host Information
+from colab_ssh import launch_ssh
+launch_ssh(authtoken, password)
+```
