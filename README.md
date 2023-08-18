@@ -34,3 +34,36 @@
     2. `Remote-SSH: Connect to Host...` - `google_colab_ssh`
         - `continue` - `password` 입력
 2. 해당 작업환경이 GPU를 사용할 수 있는지 확인하기 위해, 터미널을 켜고 `nvidia-smi` 명령어를 입력해본다
+
+## 환경변수(Environment Variable) 설정하기
+```
+AuthToken와 password를 GitHub에 업로드되는 걸 방지하고자 환경변수로 별도 관리한다
+```
+1. Google Drive에 환경변수 파일을 생성한다
+    ```shell
+        touch /content/drive/MyDrive/Colab Notebooks/.env
+    ```
+2. .env파일에 환경변수를 작성한뒤 경로를 얻는다
+    ```
+    NGROK_AUTH_TOKEN='XXXXXXXXXXXXXXXXXX'
+    REMOTE_ACCESS_PASSWORD='0000'
+    ```
+    ```shell
+    /content/drive/MyDrive/Colab Notebooks/.env
+    ```
+3. `python-dotenv`을 `pip install`하고 해당 ENV파일을 `load_dotenv`해준다
+    ```python
+    !pip install python-dotenv -qU
+
+    envpath = '/content/drive/MyDrive/Colab Notebooks/.env'
+    from dotenv import load_dotenv
+
+    load_dotenv(envpath, override=True)
+    ```
+4. `os.environ.get`으로 환경변수를 얻는다
+    ```python
+    import os
+
+    authtoken = os.environ.get('NGROK_AUTH_TOKEN')
+    password = os.environ.get('REMOTE_ACCESS_PASSWORD')
+    ```
